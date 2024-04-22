@@ -1,5 +1,5 @@
 import numpy as np
-
+from sklearn.preprocessing import StandardScaler
 
 def create_design_matrix_dataset_1(X_data: np.ndarray) -> np.ndarray:
     """
@@ -8,7 +8,13 @@ def create_design_matrix_dataset_1(X_data: np.ndarray) -> np.ndarray:
     :return: Design matrix X
     """
     # TODO: Create the design matrix X for dataset 1
-    X = None
+
+    X = np.ndarray(shape=(X_data.shape[0], X_data.shape[1] + 2))
+    new_feature_x1 = X_data[:, 0] ** 2
+    new_feature_x2 = X_data[:, 1] ** 2
+
+    X = np.append(X_data, new_feature_x1[:, np.newaxis], axis = 1)
+    X = np.append(X, new_feature_x2[:, np.newaxis], axis=1)
 
     assert X.shape[0] == X_data.shape[0], """The number of rows in the design matrix X should be the same as
                                              the number of data points."""
@@ -23,7 +29,13 @@ def create_design_matrix_dataset_2(X_data: np.ndarray) -> np.ndarray:
     :return: Design matrix X
     """
     # TODO: Create the design matrix X for dataset 2
-    X = None
+    X = np.ndarray(shape=(X_data.shape[0], X_data.shape[1] + 1))
+    x1_squared = X_data[:, 0] ** 2
+    x2_squared = X_data[:, 1] ** 2
+
+    new_feature = x1_squared + x2_squared
+
+    X = np.append(X_data, new_feature[:, np.newaxis], axis=1)
 
     assert X.shape[0] == X_data.shape[0], """The number of rows in the design matrix X should be the same as
                                              the number of data points."""
@@ -38,7 +50,15 @@ def create_design_matrix_dataset_3(X_data: np.ndarray) -> np.ndarray:
     :return: Design matrix X
     """
     # TODO: Create the design matrix X for dataset 3
-    X = None
+    X = np.ndarray(shape=(X_data.shape[0], X_data.shape[1] + 3))
+
+    new_feature_x1 = X_data[:, 0] ** 2
+    new_feature_x2 = X_data[:, 0] * X_data[:, 1]
+    new_feature_x3 = X_data[:, 1] ** 2
+
+    X = np.append(X_data, new_feature_x1[:, np.newaxis], axis=1)
+    X = np.append(X, new_feature_x2[:, np.newaxis], axis=1)
+    X = np.append(X, new_feature_x3[:, np.newaxis], axis=1)
 
     assert X.shape[0] == X_data.shape[0], """The number of rows in the design matrix X should be the same as
                                              the number of data points."""

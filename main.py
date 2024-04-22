@@ -80,18 +80,18 @@ def task_2():
         print(f'---- Logistic regression task {task} ----')
         if task == 1:
             # TODO: Load the data set 1 (X-1-data.npy and targets-dataset-1.npy)
-            X_data = None # TODO: change me
-            y = None # TODO: change me
+            X_data = np.load("data/X-1-data.npy") # TODO: change me
+            y = np.load("data/targets-dataset-1.npy") # TODO: change me
             create_design_matrix = create_design_matrix_dataset_1
         elif task == 2:
             # TODO: Load the data set 2 (X-1-data.npy and targets-dataset-2.npy)
-            X_data = None # TODO: change me
-            y = None # TODO: change me
+            X_data = np.load("data/X-1-data.npy") # TODO: change me
+            y = np.load("data/targets-dataset-2.npy") # TODO: change me
             create_design_matrix = create_design_matrix_dataset_2
         elif task == 3:
             # Load the data set 3 (X-2-data.npy and targets-dataset-3.npy)
-            X_data = None # TODO: change me
-            y = None # TODO: change me
+            X_data = np.load("data/X-2-data.npy") # TODO: change me
+            y = np.load("data/targets-dataset-3.npy") # TODO: change me
             create_design_matrix = create_design_matrix_dataset_3
         else:
             raise ValueError('Task not found.')
@@ -103,20 +103,21 @@ def task_2():
 
         # TODO: Split the dataset using the `train_test_split` function.
         #  The parameter `random_state` should be set to 0.
-        X_train, X_test, y_train, y_test = None, None, None, None
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
         print(f'Shapes of: X_train {X_train.shape}, X_test {X_test.shape}, y_train {y_train.shape}, y_test {y_test.shape}')
 
         # Train the classifier
         custom_params = logistic_regression_params_sklearn()
         clf = LogisticRegression(**custom_params)
         # TODO: Fit the model to the data using the `fit` method of the classifier `clf`
-        acc_train, acc_test = None, None # TODO: Use the `score` method of the classifier `clf` to calculate accuracy
+        clf.fit(X_train, y_train)
+        acc_train, acc_test = clf.score(X_train, y_train), clf.score(X_test, y_test) # TODO: Use the `score` method of the classifier `clf` to calculate accuracy
 
         print(f'Train accuracy: {acc_train * 100:.2f}%. Test accuracy: {100 * acc_test:.2f}%.')
-        
-        yhat_train = None # TODO: Use the `predict_proba` method of the classifier `clf` to
+
+        yhat_train = clf.predict_proba(X_train) # TODO: Use the `predict_proba` method of the classifier `clf` to
                           #  calculate the predicted probabilities on the training set
-        yhat_test = None # TODO: Use the `predict_proba` method of the classifier `clf` to
+        yhat_test = clf.predict_proba(X_test) # TODO: Use the `predict_proba` method of the classifier `clf` to
                          #  calculate the predicted probabilities on the test set
 
         # TODO: Use the `log_loss` function to calculate the cross-entropy loss
@@ -124,7 +125,8 @@ def task_2():
         #  You need to pass (1) the true binary labels and (2) the probability of the *positive* class to `log_loss`.
         #  Since the output of `predict_proba` is of shape (n_samples, n_classes), you need to select the probabilities
         #  of the positive class by indexing the second column (index 1).
-        loss_train, loss_test = None, None
+
+        loss_train, loss_test = log_loss(y_train, yhat_train[:, 1]), log_loss(y_test, yhat_test[:, 1])
         print(f'Train loss: {loss_train}. Test loss: {loss_test}.')
 
         plot_logistic_regression(clf, create_design_matrix, X_train, f'(Dataset {task}) Train set predictions',
@@ -133,7 +135,7 @@ def task_2():
                                  figname=f'logreg_test{task}')
 
         # TODO: Print theta vector (and also the bias term). Hint: Check the attributes of the classifier
-        classifier_weights, classifier_bias = None, None
+        classifier_weights, classifier_bias = clf.coef_, clf.intercept_
         print(f'Parameters: {classifier_weights}, {classifier_bias}')
 
 
@@ -166,9 +168,9 @@ def task_3():
 def main():
     np.random.seed(33761)
 
-    task_1()
+    #task_1()
     task_2()
-    task_3()
+    #task_3()
 
 
 if __name__ == '__main__':
