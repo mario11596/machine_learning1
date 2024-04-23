@@ -108,6 +108,7 @@ def task_2():
 
         # Train the classifier
         custom_params = logistic_regression_params_sklearn()
+        print(custom_params)
         clf = LogisticRegression(**custom_params)
         # TODO: Fit the model to the data using the `fit` method of the classifier `clf`
         clf.fit(X_train, y_train)
