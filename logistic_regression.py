@@ -7,14 +7,16 @@ def create_design_matrix_dataset_1(X_data: np.ndarray) -> np.ndarray:
     :return: Design matrix X
     """
     # TODO: Create the design matrix X for dataset 1
+    num_rows = X_data.shape[0]
+    tmp_array = np.zeros(shape = (num_rows, 1))
 
-    normalize_data = (X_data - np.mean(X_data, axis=0)) / np.std(X_data, axis=0)
+    for index in range(num_rows):
+        if X_data[index, 0] >= 10 and X_data[index, 1] <= 20:
+            tmp_array[index] = 1
 
-    new_feature_x1 = normalize_data[:, 0] ** 2
-    new_feature_x2 = normalize_data[:, 1] ** 2
+    new_feature_x3 = tmp_array
 
-    X = np.append(normalize_data, new_feature_x1[:, np.newaxis], axis = 1)
-    X = np.append(X, new_feature_x2[:, np.newaxis], axis=1)
+    X = np.append(X_data, new_feature_x3, axis = 1)
 
     assert X.shape[0] == X_data.shape[0], """The number of rows in the design matrix X should be the same as
                                              the number of data points."""
@@ -64,6 +66,7 @@ def create_design_matrix_dataset_3(X_data: np.ndarray) -> np.ndarray:
     X = np.append(normalize_data, new_feature_x1[:, np.newaxis], axis=1)
     X = np.append(X, new_feature_x2[:, np.newaxis], axis=1)
     X = np.append(X, new_feature_x3[:, np.newaxis], axis=1)
+
     X = np.append(X, new_feature_x4[:, np.newaxis], axis=1)
     X = np.append(X, new_feature_x5[:, np.newaxis], axis=1)
     X = np.append(X, new_feature_x6[:, np.newaxis], axis=1)
@@ -80,4 +83,4 @@ def logistic_regression_params_sklearn():
     Read the docs at https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html
     """
     # TODO: Try different `penalty` parameters for the LogisticRegression model
-    return {'penalty': None}
+    return {'penalty': 'l2'}
