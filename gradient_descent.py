@@ -21,7 +21,7 @@ def gradient_descent(f, df, x0, y0, learning_rate, lr_decay, num_iters):
     f_list = np.zeros(num_iters) # Array to store the function values over iterations
     x, y = x0, y0
     # TODO: Implement the gradient descent algorithm with a decaying learning rate
-    pass
+
 
     return x, y, f_list
 
@@ -34,7 +34,9 @@ def ackley(x, y):
     :return: f(x, y) where f is the Ackley function
     """
     # TODO: Implement the Ackley function (as specified in the Assignment 1 sheet)
-    return None
+    function = -20 * np.exp(-0.2 * np.sqrt(0.5 * (x ** 2 + y ** 2))) - np.exp(0.5 * (np.cos(2 * np.pi * x) + np.cos(2 * np.pi * y))) + np.e + 20
+
+    return function
 
 
 def gradient_ackley(x, y):

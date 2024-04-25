@@ -147,13 +147,13 @@ def task_3():
     plot_function(ackley)
 
     # TODO: Choose a random starting point using samples from a standard normal distribution
-    x0 = None
-    y0 = None
+    x0 = 2
+    y0 = 2
     print(f'{x0:.4f}, {y0:.4f}')
 
     # TODO: Call the function `gradient_descent` with a chosen configuration of hyperparameters,
     #  i.e., learning_rate, lr_decay, and num_iters. Try out lr_decay=1 as well as values for lr_decay that are < 1.
-    x, y, f_list = None, None, None
+    x, y, f_list = gradient_descent()
 
     # Print the point that is found after `max_iter` solution
     print(f'{x:.4f}, {y:.4f}')
