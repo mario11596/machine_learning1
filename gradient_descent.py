@@ -47,8 +47,8 @@ def gradient_ackley(x, y):
     :return: \nabla f(x, y) where f is the Ackley function
     """
     # TODO: Implement partial derivatives of Ackley function w.r.t. x and y
-    df_dx = None
-    df_dy = None
+    df_dx = 2 * x * (0.5 * (x ** 2 + y ** 2)) ** (-1/2) * np.exp(-0.2(0.5(x ** 2 + y ** 2)) ** 0.5) + np.pi * np.sin(2 * np.pi * x) * np.exp(0.5 * (np.cos(2 * np.pi * x) + np.cos(2 * np.pi * y)))
+    df_dy = 2 * y * (0.5 * (x ** 2 + y ** 2)) ** (-1/2) * np.exp(-0.2(0.5(x ** 2 + y ** 2)) ** 0.5) + np.pi * np.sin(2 * np.pi * y) * np.exp(0.5 * (np.cos(2 * np.pi * x) + np.cos(2 * np.pi * y)))
 
     gradient = np.array([df_dx, df_dy])
     return gradient
