@@ -161,10 +161,10 @@ def task_3():
     # TODO: Use `f_list` to create a plot of the function over iteration.
     #  Do not forget to label the plot (xlabel, ylabel, title).
 
-    plt.plot(f_list)
+    plt.plot(f_list, color = 'blue')
 
     plt.xlabel('Iteration')
-    plt.ylabel('Cost function')
+    plt.ylabel('Cost values')
     plt.title('The changes of the cost over iteration')
     plt.savefig('plots/gradient_descent_cost.pdf')
 
@@ -176,8 +176,8 @@ def task_3():
 def main():
     np.random.seed(33761)
 
-    task_1()
-    task_2()
+    #task_1()
+    #task_2()
     task_3()
 
 
