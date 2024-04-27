@@ -108,7 +108,7 @@ def task_2():
 
         # Train the classifier
         custom_params = logistic_regression_params_sklearn()
-        print(custom_params)
+
         clf = LogisticRegression(**custom_params)
         # TODO: Fit the model to the data using the `fit` method of the classifier `clf`
         clf.fit(X_train, y_train)
@@ -147,20 +147,27 @@ def task_3():
     plot_function(ackley)
 
     # TODO: Choose a random starting point using samples from a standard normal distribution
-    x0 = 2
-    y0 = 2
+    x0 = np.random.normal(0, 1)
+    y0 = np.random.normal(0, 1)
     print(f'{x0:.4f}, {y0:.4f}')
 
     # TODO: Call the function `gradient_descent` with a chosen configuration of hyperparameters,
     #  i.e., learning_rate, lr_decay, and num_iters. Try out lr_decay=1 as well as values for lr_decay that are < 1.
-    x, y, f_list = gradient_descent()
+    x, y, f_list = gradient_descent(ackley, gradient_ackley, x0, y0, 1.0, 0.995, 100)
 
     # Print the point that is found after `max_iter` solution
     print(f'{x:.4f}, {y:.4f}')
 
     # TODO: Use `f_list` to create a plot of the function over iteration.
     #  Do not forget to label the plot (xlabel, ylabel, title).
-    pass
+
+    plt.plot(f_list)
+
+    plt.xlabel('Iteration')
+    plt.ylabel('Cost function')
+    plt.title('The changes of the cost over iteration')
+    plt.savefig('plots/gradient_descent_cost.pdf')
+
 
     print(f'Solution found: f({x:.4f}, {y:.4f})= {ackley(x,y):.4f}' )
     print(f'Global optimum: f(0, 0)= {ackley(0,0):.4f}')
@@ -169,9 +176,9 @@ def task_3():
 def main():
     np.random.seed(33761)
 
-    #task_1()
+    task_1()
     task_2()
-    #task_3()
+    task_3()
 
 
 if __name__ == '__main__':
