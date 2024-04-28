@@ -147,8 +147,9 @@ def task_3():
     plot_function(ackley)
 
     # TODO: Choose a random starting point using samples from a standard normal distribution
-    x0 = np.random.normal(0, 1)
-    y0 = np.random.normal(0, 1)
+    normal_distribution = np.random.randn(2)
+    x0 = normal_distribution[0]
+    y0 = normal_distribution[1]
     print(f'{x0:.4f}, {y0:.4f}')
 
     # TODO: Call the function `gradient_descent` with a chosen configuration of hyperparameters,
@@ -177,8 +178,8 @@ def main():
     np.random.seed(33761)
 
     #task_1()
-    #task_2()
-    task_3()
+    task_2()
+    #task_3()
 
 
 if __name__ == '__main__':
