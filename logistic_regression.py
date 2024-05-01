@@ -34,9 +34,10 @@ def create_design_matrix_dataset_2(X_data: np.ndarray) -> np.ndarray:
     x1_squared = X_data[:, 0] ** 2
     x2_squared = X_data[:, 1] ** 2
 
-    new_feature_sum_squared = x1_squared + x2_squared
+    radius = 24
+    new_feature_circle = ((x1_squared + x2_squared) - (radius ** 2))
 
-    X = np.append(X_data, new_feature_sum_squared[:, np.newaxis], axis=1)
+    X = np.append(X_data, new_feature_circle[:, np.newaxis], axis=1)
 
     assert X.shape[0] == X_data.shape[0], """The number of rows in the design matrix X should be the same as
                                              the number of data points."""
@@ -81,4 +82,4 @@ def logistic_regression_params_sklearn():
     Read the docs at https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html
     """
     # TODO: Try different `penalty` parameters for the LogisticRegression model
-    return {'penalty': 'l2'}
+    return {'penalty': None}
