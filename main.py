@@ -228,8 +228,8 @@ def task_3():
 def main():
     np.random.seed(33761)
 
-    # task_1()
-    # task_2()
+    task_1()
+    task_2()
     task_3()
 
 
