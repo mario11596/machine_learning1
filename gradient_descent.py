@@ -29,7 +29,7 @@ def gradient_descent(f, df, x0, y0, learning_rate, lr_decay, num_iters):
 
         learning_rate = learning_rate * lr_decay
 
-        f_list[i] = f(x, y) # do we need to send cost or?
+        f_list[i] = f(x, y)
 
     return x, y, f_list
 
@@ -55,8 +55,8 @@ def gradient_ackley(x, y):
     :return: \nabla f(x, y) where f is the Ackley function
     """
     # TODO: Implement partial derivatives of Ackley function w.r.t. x and y
-    df_dx = (2 * x) / np.sqrt(0.5 * (x ** 2 + y ** 2)) * np.exp(-0.2 * (0.5 * (x ** 2 + y ** 2)) ** 0.5) + np.pi * np.sin(2 * np.pi * x) * np.exp(0.5 * (np.cos(2 * np.pi * x) + np.cos(2 * np.pi * y)))
-    df_dy = (2 * y) / np.sqrt(0.5 * (x ** 2 + y ** 2)) * np.exp(-0.2 * (0.5 * (x ** 2 + y ** 2)) ** 0.5) + np.pi * np.sin(2 * np.pi * y) * np.exp(0.5 * (np.cos(2 * np.pi * x) + np.cos(2 * np.pi * y)))
+    df_dx = (2 * x) / np.sqrt(0.5 * (x ** 2 + y ** 2)) * np.exp(-0.2 * np.sqrt(0.5 * (x ** 2 + y ** 2))) + np.pi * np.sin(2 * np.pi * x) * np.exp(0.5 * (np.cos(2 * np.pi * x) + np.cos(2 * np.pi * y)))
+    df_dy = (2 * y) / np.sqrt(0.5 * (x ** 2 + y ** 2)) * np.exp(-0.2 * np.sqrt(0.5 * (x ** 2 + y ** 2))) + np.pi * np.sin(2 * np.pi * y) * np.exp(0.5 * (np.cos(2 * np.pi * x) + np.cos(2 * np.pi * y)))
 
     gradient = np.array([df_dx, df_dy])
     return gradient
