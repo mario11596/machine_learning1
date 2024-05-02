@@ -161,6 +161,7 @@ def task_3():
         {'learning_rate': 0.01, 'lr_decay': 1.0, 'num_iters': 200},
         {'learning_rate': 0.2, 'lr_decay': 0.90, 'num_iters': 300},
         {'learning_rate': 0.2, 'lr_decay': 0.90, 'num_iters': 100},
+        {'learning_rate': 0.2, 'lr_decay': 0.95, 'num_iters': 250},
         {'learning_rate': 0.2, 'lr_decay': 0.95, 'num_iters': 50},
         {'learning_rate': 0.01, 'lr_decay': 0.95, 'num_iters': 1000}
     ]
@@ -211,7 +212,8 @@ def task_3():
 
     # TODO: Use `f_list` to create a plot of the function over iteration.
     #  Do not forget to label the plot (xlabel, ylabel, title).
-    f_list = results[3]["f_list"]
+    id_best = 5
+    f_list = results[id_best]["f_list"]
     plt.plot(f_list, color='blue')
 
     plt.xlabel('Iteration')
@@ -221,7 +223,7 @@ def task_3():
 
     print(f'Solution found: f({x:.4f}, {y:.4f})= {ackley(x, y):.4f}')
     print(f'Global optimum: f(0, 0)= {ackley(0, 0):.4f}')
-
+    return results[id_best]['config']
 
 def main():
     np.random.seed(33761)
