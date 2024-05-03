@@ -214,6 +214,8 @@ def task_3():
     #  Do not forget to label the plot (xlabel, ylabel, title).
     id_best = 5
     f_list = results[id_best]["f_list"]
+    x = results[id_best]['final_pos'][0]
+    y = results[id_best]['final_pos'][1]
     plt.plot(f_list, color='blue')
 
     plt.xlabel('Iteration')
