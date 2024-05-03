@@ -55,8 +55,8 @@ def create_design_matrix_dataset_3(X_data: np.ndarray) -> np.ndarray:
     normalize_data = (X_data - np.mean(X_data, axis = 0)) / np.std(X_data, axis = 0)
 
     new_feature_x1 = normalize_data[:, 0] ** 2
-    new_feature_x2 = normalize_data[:, 0] * normalize_data[:, 1]
-    new_feature_x3 = normalize_data[:, 1] ** 2
+    new_feature_x2 = normalize_data[:, 1] ** 2
+    new_feature_x3 = normalize_data[:, 0] * normalize_data[:, 1]
 
     new_feature_x4 = normalize_data[:, 0] ** 3
     new_feature_x5 = normalize_data[:, 1] ** 3
