@@ -148,7 +148,6 @@ def task_3():
 
     # TODO: Choose a random starting point using samples from a standard normal distribution
     normal_distribution = np.random.randn(2)
-    normal_distribution = np.random.randn(2)
     x0 = normal_distribution[0]
     y0 = normal_distribution[1]
     print(f'{x0:.4f}, {y0:.4f}')
