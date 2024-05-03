@@ -60,7 +60,7 @@ def create_design_matrix_dataset_3(X_data: np.ndarray) -> np.ndarray:
 
     new_feature_x4 = normalize_data[:, 0] ** 3
     new_feature_x5 = normalize_data[:, 1] ** 3
-    new_feature_x6 = new_feature_x3 * new_feature_x1
+    new_feature_x6 = new_feature_x2 * new_feature_x1
 
     X = np.append(normalize_data, new_feature_x1[:, np.newaxis], axis=1)
     X = np.append(X, new_feature_x2[:, np.newaxis], axis=1)
