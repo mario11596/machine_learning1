@@ -22,14 +22,16 @@ def gradient_descent(f, df, x0, y0, learning_rate, lr_decay, num_iters):
     x, y = x0, y0
     # TODO: Implement the gradient descent algorithm with a decaying learning rate
 
-    for i in range(num_iters):
-        gradient_results = df(x, y)
-        x = x - learning_rate * gradient_results[0]
-        y = y - learning_rate * gradient_results[1]
+    for iteration in range(num_iters):
+        gradient_results_xy = df(x, y)
+        x_grad = gradient_results_xy[0]
+        y_grad = gradient_results_xy[1]
+        x = x - (learning_rate * x_grad)
+        y = y - (learning_rate * y_grad)
 
         learning_rate = learning_rate * lr_decay
 
-        f_list[i] = f(x, y)
+        f_list[iteration] = f(x, y)
 
     return x, y, f_list
 
