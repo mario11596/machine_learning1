@@ -56,7 +56,7 @@ def train_nn(X_train: np.ndarray, y_train: np.ndarray) -> MLPClassifier:
     for n_hidden in num_hidden:
         print(f'The number of neurons in one hidden layer: {n_hidden}')
 
-        mlp_model = MLPClassifier(solver='adam', max_iter=500, random_state=1, hidden_layer_sizes=n_hidden)
+        mlp_model = MLPClassifier(solver='adam', max_iter=500, random_state=1, hidden_layer_sizes=(n_hidden,))
         mlp_model.fit(X_train, y_train)
 
         prediction_train = mlp_model.predict(X_train)
@@ -112,13 +112,13 @@ def train_nn_with_regularization(X_train: np.ndarray, y_train: np.ndarray) -> ML
         for i in range(3):
             if i == 0:
                 print(f'The number of neurons in one hidden layer: {n_hidden}, alpha: {regularization[i][0]}')
-                mlp_model = MLPClassifier(solver='adam', max_iter=500, random_state=1, hidden_layer_sizes=n_hidden, alpha=regularization[i][0])
+                mlp_model = MLPClassifier(solver='adam', max_iter=500, random_state=1, hidden_layer_sizes=(n_hidden,), alpha=regularization[i][0])
             elif i == 1:
                 print(f'The number of neurons in one hidden layer: {n_hidden}, early_stopping: {regularization[i][1]}')
-                mlp_model = MLPClassifier(solver='adam', max_iter=500, random_state=1, hidden_layer_sizes=n_hidden,early_stopping=regularization[i][1])
+                mlp_model = MLPClassifier(solver='adam', max_iter=500, random_state=1, hidden_layer_sizes=(n_hidden,),early_stopping=regularization[i][1])
             elif i == 2:
                 print(f'The number of neurons in one hidden layer: {n_hidden}, alpha: {regularization[i][0]}, early_stopping: {regularization[i][1]}')
-                mlp_model = MLPClassifier(solver='adam', max_iter=500, random_state=1, hidden_layer_sizes=n_hidden,
+                mlp_model = MLPClassifier(solver='adam', max_iter=500, random_state=1, hidden_layer_sizes=(n_hidden,),
                                           early_stopping=regularization[i][1], alpha=regularization[i][0])
             mlp_model.fit(X_train, y_train)
 
@@ -209,7 +209,7 @@ def perform_grid_search(X_train: np.ndarray, y_train: np.ndarray) -> MLPClassifi
     parameters = {
         'alpha' : [0.0, 0.1, 1.0],
         'solver': ['lbfgs', 'adam'],
-        'hidden_layer_sizes' : [(100,), (200)]
+        'hidden_layer_sizes' : [(100,), (200,)]
     }
 
     mlp_model = MLPClassifier(max_iter=100, random_state=42)
