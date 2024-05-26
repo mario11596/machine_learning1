@@ -49,11 +49,8 @@ def train_nn(X_train: np.ndarray, y_train: np.ndarray) -> MLPClassifier:
     # TODO: Train MLPClassifier with different number of neurons in one hidden layer.
     #       Print the train accuracy, validation accuracy, and the training loss for each configuration.
     #       Return the MLPClassifier that you consider to be the best.
-    mlp_model_best = None
+
     num_hidden = [2, 10, 100, 200, 500]
-    train_accuracy = []
-    validation_accuracy = []
-    training_loss = []
     all_models = []
 
     for n_hidden in num_hidden:
@@ -66,35 +63,27 @@ def train_nn(X_train: np.ndarray, y_train: np.ndarray) -> MLPClassifier:
         prediction_validation = mlp_model.predict(X_val)
 
         count = 0
-
         for prediction, ground_true in zip(prediction_train, y_train):
             if prediction == ground_true:
                 count = count + 1
 
         accuracy_train = count / len(y_train)
-        train_accuracy.append(accuracy_train)
 
         count = 0
         for prediction, ground_true in zip(prediction_validation, y_val):
             if prediction == ground_true:
                 count = count + 1
 
-        accuracy_validation = count / len(y_train)
-        validation_accuracy.append(accuracy_validation)
+        accuracy_validation = count / len(y_val)
 
-        training_loss.append(mlp_model.loss_)
         all_models.append(mlp_model)
 
-        print(f'train accuracy: {accuracy_train}')
-        print(f'validation accuracy: {accuracy_validation}')
-        print(f'training loss: {mlp_model.loss_}')
+        print(f'Train accuracy: {accuracy_train}')
+        print(f'Validation accuracy: {accuracy_validation}')
+        print(f'Training loss: {mlp_model.loss_}')
+        print(f'Training loss: {mlp_model.loss_}')
 
-    index_validation = np.argmax(validation_accuracy)
-    index_training = np.argmin(training_loss)
-
-    if index_validation == index_training:
-        print(index_validation)
-        mlp_model_best = all_models[index_validation]
+    mlp_model_best = all_models[4]
 
     return mlp_model_best
 
@@ -117,20 +106,18 @@ def train_nn_with_regularization(X_train: np.ndarray, y_train: np.ndarray) -> ML
     regulasization = [[0.1, None],
                       [None, True],
                       [0.1, True]]
-    train_accuracy = []
-    validation_accuracy = []
-    training_loss = []
+    all_models = []
 
     for n_hidden in num_hidden:
         for i in range(3):
             if i == 0:
-                print(f'The number of neurons in one hidden layer: {n_hidden}, regularization alpha: {regulasization[i][0]}')
+                print(f'The number of neurons in one hidden layer: {n_hidden}, alpha: {regulasization[i][0]}')
                 mlp_model = MLPClassifier(solver='adam', max_iter=500, random_state=1, hidden_layer_sizes=n_hidden, alpha=regulasization[i][0])
             elif i == 1:
-                print(f'The number of neurons in one hidden layer: {n_hidden}, regularization early_stopping: {regulasization[i][1]}')
+                print(f'The number of neurons in one hidden layer: {n_hidden}, early_stopping: {regulasization[i][1]}')
                 mlp_model = MLPClassifier(solver='adam', max_iter=500, random_state=1, hidden_layer_sizes=n_hidden,early_stopping=regulasization[i][1])
             elif i == 2:
-                print(f'The number of neurons in one hidden layer: {n_hidden}, regularization alpha: {regulasization[i][0]}, regularization early_stopping: {regulasization[i][1]}')
+                print(f'The number of neurons in one hidden layer: {n_hidden}, alpha: {regulasization[i][0]}, early_stopping: {regulasization[i][1]}')
                 mlp_model = MLPClassifier(solver='adam', max_iter=500, random_state=1, hidden_layer_sizes=n_hidden,
                                           early_stopping=regulasization[i][1], alpha=regulasization[i][0])
             mlp_model.fit(X_train, y_train)
@@ -139,29 +126,27 @@ def train_nn_with_regularization(X_train: np.ndarray, y_train: np.ndarray) -> ML
             prediction_validation = mlp_model.predict(X_val)
 
             count = 0
-
             for prediction, ground_true in zip(prediction_train, y_train):
                 if prediction == ground_true:
                     count = count + 1
 
             accuracy_train = count / len(y_train)
-            train_accuracy.append(accuracy_train)
 
             count = 0
             for prediction, ground_true in zip(prediction_validation, y_val):
                 if prediction == ground_true:
                     count = count + 1
 
-            accuracy_validation = count / len(y_train)
-            validation_accuracy.append(accuracy_validation)
+            accuracy_validation = count / len(y_val)
 
-            training_loss.append(mlp_model.loss_)
+            all_models.append(mlp_model)
 
-            print(f'train accuracy: {accuracy_train}')
-            print(f'validation accuracy: {accuracy_validation}')
-            print(f'training loss: {mlp_model.loss_}')
+            print(f'Train accuracy: {round(accuracy_train, 5)}')
+            print(f'Validation accuracy: {round(accuracy_validation, 5)}')
+            print(f'Training loss: {round(mlp_model.loss_, 5)}')
 
-    return None
+
+    return all_models[12]
 
 
 def plot_training_loss_curve(nn: MLPClassifier) -> None:
@@ -194,6 +179,10 @@ def show_confusion_matrix_and_classification_report(nn: MLPClassifier, X_test: n
     #       Use `classification_report` to print the classification report.
 
     model_prediction = nn.predict(X_test)
+
+    test_accuracy = nn.score(X_test, y_test)
+    print(f'Test accuracy: {round(test_accuracy, 5)}')
+
     cf_matrix = confusion_matrix(y_test, model_prediction)
     cd_display = ConfusionMatrixDisplay(confusion_matrix=cf_matrix, display_labels=nn.classes_)
     cd_display.plot()
