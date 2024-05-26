@@ -20,7 +20,7 @@ def task_1():
     # PCA
     # Task 1.1.1
     print("----- Task 1.1.1 -----")
-    n_components = 340 # TODO: Choose the number of components such that 95% of the variance is retained
+    n_components = 303 # TODO: Choose the number of components such that 95% of the variance is retained
     X_train_pca, pca = reduce_dimension(X_train, n_components)
     print(X_train_pca.shape)
 
@@ -30,14 +30,14 @@ def task_1():
 
     # Task 1.1.3 needs no code, only explanations in the report
 
-    # # Task 1.1.4
+    # Task 1.1.4
     print("----- Task 1.1.4 -----")
     best_reg_nn = train_nn_with_regularization(X_train_pca, y_train)
 
     best_model_task_1_1 = best_reg_nn # TODO: Choose the best model from the previous Tasks
     plot_training_loss_curve(best_model_task_1_1)
 
-    # # Task 1.2
+    # # # Task 1.2
     print("----- Task 1.2 -----")
     best_gs_nn = perform_grid_search(X_train_pca, y_train)
 

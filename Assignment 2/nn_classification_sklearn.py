@@ -78,12 +78,12 @@ def train_nn(X_train: np.ndarray, y_train: np.ndarray) -> MLPClassifier:
 
         all_models.append(mlp_model)
 
-        print(f'Train accuracy: {accuracy_train}')
-        print(f'Validation accuracy: {accuracy_validation}')
-        print(f'Training loss: {mlp_model.loss_}')
-        print(f'Training loss: {mlp_model.loss_}')
+        print(f'Train accuracy: {round(accuracy_train, 5)}')
+        print(f'Validation accuracy: {round(accuracy_validation, 5)}')
+        print(f'Training loss: {round(mlp_model.loss_, 5)}')
 
-    mlp_model_best = all_models[4]
+
+    mlp_model_best = all_models[3]
 
     return mlp_model_best
 
@@ -103,7 +103,7 @@ def train_nn_with_regularization(X_train: np.ndarray, y_train: np.ndarray) -> ML
     #       Again, return the MLPClassifier that you consider to be the best.
     mlp_model = None
     num_hidden = [2, 10, 100, 200, 500]
-    regulasization = [[0.1, None],
+    regularization = [[0.1, None],
                       [None, True],
                       [0.1, True]]
     all_models = []
@@ -111,15 +111,15 @@ def train_nn_with_regularization(X_train: np.ndarray, y_train: np.ndarray) -> ML
     for n_hidden in num_hidden:
         for i in range(3):
             if i == 0:
-                print(f'The number of neurons in one hidden layer: {n_hidden}, alpha: {regulasization[i][0]}')
-                mlp_model = MLPClassifier(solver='adam', max_iter=500, random_state=1, hidden_layer_sizes=n_hidden, alpha=regulasization[i][0])
+                print(f'The number of neurons in one hidden layer: {n_hidden}, alpha: {regularization[i][0]}')
+                mlp_model = MLPClassifier(solver='adam', max_iter=500, random_state=1, hidden_layer_sizes=n_hidden, alpha=regularization[i][0])
             elif i == 1:
-                print(f'The number of neurons in one hidden layer: {n_hidden}, early_stopping: {regulasization[i][1]}')
-                mlp_model = MLPClassifier(solver='adam', max_iter=500, random_state=1, hidden_layer_sizes=n_hidden,early_stopping=regulasization[i][1])
+                print(f'The number of neurons in one hidden layer: {n_hidden}, early_stopping: {regularization[i][1]}')
+                mlp_model = MLPClassifier(solver='adam', max_iter=500, random_state=1, hidden_layer_sizes=n_hidden,early_stopping=regularization[i][1])
             elif i == 2:
-                print(f'The number of neurons in one hidden layer: {n_hidden}, alpha: {regulasization[i][0]}, early_stopping: {regulasization[i][1]}')
+                print(f'The number of neurons in one hidden layer: {n_hidden}, alpha: {regularization[i][0]}, early_stopping: {regularization[i][1]}')
                 mlp_model = MLPClassifier(solver='adam', max_iter=500, random_state=1, hidden_layer_sizes=n_hidden,
-                                          early_stopping=regulasization[i][1], alpha=regulasization[i][0])
+                                          early_stopping=regularization[i][1], alpha=regularization[i][0])
             mlp_model.fit(X_train, y_train)
 
             prediction_train = mlp_model.predict(X_train)
