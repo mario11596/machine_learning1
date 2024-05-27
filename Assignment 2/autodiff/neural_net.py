@@ -78,7 +78,7 @@ class FeedForwardLayer(Module):
         :param x: List of Scalar values, representing the input features
         """
         # raise NotImplementedError('Task 2.2 not implemented')
-        return [Scalar(neuron.__call__(x)) for neuron in self.neurons]
+        return [neuron.__call__(x) for neuron in self.neurons]
 
     def parameters(self):
         return [p for n in self.neurons for p in n.parameters()]

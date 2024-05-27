@@ -62,8 +62,16 @@ class MLPClassifierOwn():
         :param y_true: True class index (0-based)
         :param probs: List of Scalar values, representing the predicted probabilities for each class
         """
-        raise NotImplementedError('Task 2.4 not implemented.')
-        return None
+        # raise NotImplementedError('Task 2.4 not implemented.')
+        loss = Scalar(0.0)
+        new_probs = []
+        # perform clipping to ensure numerical stability
+        for prob in probs:
+            clipped_prob = min(1.0 - 1e-14, prob.value)
+            clipped_prob = max(1e-14, clipped_prob)
+            new_probs.extend([Scalar(clipped_prob)])
+        loss = Scalar(-1.0) * new_probs[y_true].log()
+        return loss
 
     @staticmethod
     def binary_cross_entropy_loss(y_true: int, prob: Scalar) -> Scalar:

@@ -2,6 +2,7 @@ from sklearn.model_selection import train_test_split
 from mlp_classifier_own import MLPClassifierOwn
 import numpy as np
 
+
 def train_nn_own(X_train: np.ndarray, y_train: np.ndarray) -> MLPClassifierOwn:
     """
     Train MLPClassifierOwn with PCA-projected features.
@@ -18,6 +19,6 @@ def train_nn_own(X_train: np.ndarray, y_train: np.ndarray) -> MLPClassifierOwn:
     #       Return the trained model
 
     mlp_class = MLPClassifierOwn(5, 0.0, 32, (16,), 42)
-    mlp_class.fit(X_train,y_train)
+    mlp_class.fit(X_train, y_train)
     print("ok")
-    return None
+    return mlp_class

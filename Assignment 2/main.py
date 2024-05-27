@@ -85,8 +85,8 @@ def task_3_bonus():
 
 
 def main():
-    task_1()
-    #task_2()
+    # task_1()
+    task_2()
     #task_3_bonus()
 
 
