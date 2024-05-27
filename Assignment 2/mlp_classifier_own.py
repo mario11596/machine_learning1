@@ -22,8 +22,27 @@ class MLPClassifierOwn():
 
         :param z: List of Scalar values
         """
-        raise NotImplementedError('Task 2.4 not implemented.')
-        return None
+        # raise NotImplementedError('Task 2.4 not implemented.')
+        """
+        To prevent numerical over- and underflow issues we are going to subtract the maximum
+        of the input from every input before calling the exponential function
+        SOURCE: https://stackoverflow.com/questions/42599498/numerically-stable-softmax
+        """
+        maximum = Scalar(-99999.9999999)
+        sum = Scalar(0.0)
+        for zz in z:
+            maximum.value = max(maximum.value, zz.value)
+
+        new_z = []
+        for zz in z:
+            new_zz = (zz - maximum).exp()
+            new_z.extend([new_zz])
+            sum += new_zz
+
+        for i in range(len(new_z)):
+            new_z[i] /= sum
+
+        return new_z
 
     @staticmethod
     def sigmoid(z: Scalar) -> Scalar:

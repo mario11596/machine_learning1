@@ -2,6 +2,7 @@ import random
 from typing import List
 from autodiff.scalar import Scalar
 
+
 class Module:
     def zero_grad(self) -> None:
         """
@@ -15,6 +16,7 @@ class Module:
         Return a list of parameters of the module.
         """
         return []
+
 
 class Neuron(Module):
     def __init__(self, num_inputs: int, use_relu=True):
@@ -39,13 +41,23 @@ class Neuron(Module):
         :param x: List of Scalar values, representing the inputs to the neuron
         """
         # TODO: Implement the forward pass through the neuron.
-        raise NotImplementedError('Task 2.1 not implemented')
+        # raise NotImplementedError('Task 2.1 not implemented')
+        ws = Scalar(0.0)
+        for i in range(len(x)):
+            ws += x[i] * self.w[i]
+        ws += self.b
+
+        if self.use_relu:
+            return ws.relu()
+        else:
+            return ws
 
     def parameters(self):
         return self.w + [self.b]
 
     def __repr__(self):
         return f"{'ReLU' if self.use_relu else 'Linear'}Neuron({len(self.w)})"
+
 
 class FeedForwardLayer(Module):
     def __init__(self, num_inputs: int, num_outputs: int, use_relu: bool):
@@ -56,8 +68,8 @@ class FeedForwardLayer(Module):
         :param num_outputs: Number of neurons in that layer
         """
         # TODO: Initialize the neurons in the layer. `self.neurons` should be a List of Neuron objects.
-        self.neurons = None
-        raise NotImplementedError('Task 2.2 not implemented')
+        self.neurons = [Neuron(num_inputs=num_inputs, use_relu=use_relu) for _ in range(num_outputs)]
+        # raise NotImplementedError('Task 2.2 not implemented')
 
     def __call__(self, x: List[Scalar]) -> List[Scalar]:
         """
@@ -65,14 +77,15 @@ class FeedForwardLayer(Module):
 
         :param x: List of Scalar values, representing the input features
         """
-        raise NotImplementedError('Task 2.2 not implemented')
-        return None
+        # raise NotImplementedError('Task 2.2 not implemented')
+        return [Scalar(neuron.__call__(x)) for neuron in self.neurons]
 
     def parameters(self):
         return [p for n in self.neurons for p in n.parameters()]
 
     def __repr__(self):
         return f"FeedForwardLayer of [{', '.join(str(n) for n in self.neurons)}]"
+
 
 class MultiLayerPerceptron(Module):
     def __init__(self, num_inputs: int, num_hidden: List[int], num_outputs: int):
@@ -85,8 +98,12 @@ class MultiLayerPerceptron(Module):
         :param num_outputs: Number of output neurons
         """
         # TODO: `self.layers` should be a List of FeedForwardLayer objects.
-        self.layers = None
-        raise NotImplementedError('Task 2.3 not implemented')
+        self.layers: List[FeedForwardLayer] = []
+        self.layers.extend([FeedForwardLayer(num_inputs, num_hidden[0], True)])
+        for i in range(len(num_hidden) - 1):
+            self.layers.extend([FeedForwardLayer(num_inputs=num_hidden[i], num_outputs=num_hidden[i+1], use_relu=True)])
+        self.layers.extend([FeedForwardLayer(num_inputs=num_hidden[-1], num_outputs=num_outputs, use_relu=False)])
+        # raise NotImplementedError('Task 2.3 not implemented')
 
     def __call__(self, x: List[Scalar]) -> List[Scalar]:
         """
@@ -96,8 +113,11 @@ class MultiLayerPerceptron(Module):
 
         :param x: List of Scalar values, representing the input features
         """
-        raise NotImplementedError('Task 2.3 not implemented')
-        return None
+        # raise NotImplementedError('Task 2.3 not implemented')
+        outputs = [x]
+        for layer in self.layers:
+            outputs.append(layer.__call__(outputs[-1]))
+        return outputs[-1]
 
     def parameters(self):
         return [p for layer in self.layers for p in layer.parameters()]
