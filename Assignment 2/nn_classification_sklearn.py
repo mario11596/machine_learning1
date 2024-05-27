@@ -83,7 +83,7 @@ def train_nn(X_train: np.ndarray, y_train: np.ndarray) -> MLPClassifier:
         print(f'Training loss: {round(mlp_model.loss_, 5)}')
 
 
-    mlp_model_best = all_models[3]
+    mlp_model_best = all_models[4]
 
     return mlp_model_best
 
@@ -146,7 +146,7 @@ def train_nn_with_regularization(X_train: np.ndarray, y_train: np.ndarray) -> ML
             print(f'Training loss: {round(mlp_model.loss_, 5)}')
 
 
-    return all_models[12]
+    return all_models[9]
 
 
 def plot_training_loss_curve(nn: MLPClassifier) -> None:
