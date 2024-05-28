@@ -51,8 +51,8 @@ class MLPClassifierOwn():
 
         :param z: Scalar
         """
-        raise NotImplementedError('[Bonus] Task 3.1 not implemented.')
-        return None
+        # raise NotImplementedError('[Bonus] Task 3.1 not implemented.')
+        return Scalar(1.0) / (Scalar(1.0) + (Scalar(-1.0)*z).exp())
 
     @staticmethod
     def multiclass_cross_entropy_loss(y_true: int, probs: List[Scalar]) -> Scalar:
@@ -73,8 +73,8 @@ class MLPClassifierOwn():
         :param y_true: 0 or 1
         :param prob: Scalar between 0 and 1, representing the probability of the positive class
         """
-        raise NotImplementedError('[Bonus] Task 3.1 not implemented.')
-        return None
+        # raise NotImplementedError('[Bonus] Task 3.1 not implemented.')
+        return Scalar(-1.0)*(Scalar(y_true) * prob.log()) + (Scalar(1.0) - Scalar(y_true))*(Scalar(1.0) - prob).log()
 
     def l2_regularization_term(self) -> Scalar:
         """
@@ -83,8 +83,17 @@ class MLPClassifierOwn():
         Compute the sum of squared model parameters and weigh this term by alpha/2 * (1 / batch_size).
         Ensure that you return a Scalar object since we need to backpropagate through this term.
         """
-        raise NotImplementedError('[Bonus] L2 Regularization not implemented.')
-        return None
+        # raise NotImplementedError('[Bonus] L2 Regularization not implemented.')
+        reg = Scalar(self.alpha) / (Scalar(2.0) * Scalar(self.batch_size))
+        sum_squared = Scalar(0.0)
+        for layer in self.model.layers:
+            for neuron in layer.neurons:
+                for weight in neuron.w:
+                    sum_squared += weight*weight
+                sum_squared += neuron.b * neuron.b
+        sum_squared = sum_squared.__pow__(0.5)
+        reg *= sum_squared
+        return reg
 
     def sgd_step(self, learning_rate: float) -> None:
         """
