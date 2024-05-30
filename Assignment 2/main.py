@@ -20,7 +20,7 @@ def task_1():
     # PCA
     # Task 1.1.1
     print("----- Task 1.1.1 -----")
-    n_components = 320 # TODO: Choose the number of components such that 95% of the variance is retained
+    n_components = 303 # TODO: Choose the number of components such that 95% of the variance is retained
     X_train_pca, pca = reduce_dimension(X_train, n_components)
     print(X_train_pca.shape)
 

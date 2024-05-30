@@ -23,14 +23,14 @@ def reduce_dimension(X_train: np.ndarray, n_components: int) -> Tuple[np.ndarray
     #       Print the explained variance ratio of the PCA object.
     #       Return both the transformed data and the PCA object.
 
-    pca_model = PCA(n_components = n_components)
+    pca_model = PCA(n_components = n_components, random_state=42)
     x_transform = pca_model.fit_transform(X_train)
 
     pca_ratio = np.sum(pca_model.explained_variance_ratio_) * 100
 
     print(f'Explained variance ratio of the PCA object: {pca_ratio}')
 
-    return [x_transform, pca_model]
+    return x_transform, pca_model
 
 
 def train_nn(X_train: np.ndarray, y_train: np.ndarray) -> MLPClassifier:
@@ -80,7 +80,7 @@ def train_nn(X_train: np.ndarray, y_train: np.ndarray) -> MLPClassifier:
 
         print(f'Training Accuracy: {round(accuracy_train, 5)}')
         print(f'Validation Accuracy: {round(accuracy_validation, 5)}')
-        print(f'Testing loss: {round(mlp_model.loss_, 5)}')
+        print(f'Training loss: {round(mlp_model.loss_, 5)}')
 
     mlp_model_best = all_models[4]
 
@@ -142,7 +142,7 @@ def train_nn_with_regularization(X_train: np.ndarray, y_train: np.ndarray) -> ML
 
             print(f'Training Accuracy: {round(accuracy_train, 5)}')
             print(f'Validation Accuracy: {round(accuracy_validation, 5)}')
-            print(f'Testing loss: {round(mlp_model.loss_, 5)}')
+            print(f'Training loss: {round(mlp_model.loss_, 5)}')
 
     return all_models[9]
 
