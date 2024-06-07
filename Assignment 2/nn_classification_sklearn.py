@@ -82,7 +82,7 @@ def train_nn(X_train: np.ndarray, y_train: np.ndarray) -> MLPClassifier:
         print(f'Validation Accuracy: {round(accuracy_validation, 5)}')
         print(f'Training loss: {round(mlp_model.loss_, 5)}')
 
-    mlp_model_best = all_models[4]
+    mlp_model_best = all_models[3]
 
     return mlp_model_best
 
