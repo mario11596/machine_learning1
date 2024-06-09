@@ -14,7 +14,12 @@ def grid_search_knn_and_plot_decision_boundary(X_train, y_train, X_test, y_test,
     knn = KNearestNeighborsClassifier()
     # TODO: Use the `GridSearchCV` meta-classifier and search over different values of `k`
     #       Include the `return_train_score=True` option to get the training accuracies
-    grid_search = None
+    k = list(range(1, 101))
+    parameters = {
+        'k': k
+    }
+    grid_search = GridSearchCV(knn, parameters, cv=5, return_train_score=True)
+    grid_search.fit(X_train, y_train)
 
     # this plots the decision boundary
     plt.figure()
@@ -22,11 +27,23 @@ def grid_search_knn_and_plot_decision_boundary(X_train, y_train, X_test, y_test,
     plot_dataset(X_train, y_train, X_test, y_test)
     plt.title(f"Decision boundary for dataset {dataset_name}\nwith k={grid_search.best_params_['k']}")
     # TODO you should use the plt.savefig(...) function to store your plots before calling plt.show()
+    plt.savefig(f'knn_with_decision_boundary_dataset_{dataset_name}.png')
     plt.show()
 
     # TODO: Create a plot that shows the mean training and validation scores (y axis)
     #       for each k \in {1,...,100} (x axis).
     #       Hint: Check the `cv_results_` attribute of the `GridSearchCV` object
+
+    plt.figure()
+    plt.xlabel('k value')
+    plt.ylabel('Mean score')
+    plt.title(f"Mean training and validation scores - dataset {dataset_name}")
+    plt.plot(k, grid_search.cv_results_['mean_train_score'], label='Mean train score', color='red')
+    plt.plot(k, grid_search.cv_results_['mean_test_score'], label='Mean validation score', color='blue')
+    plt.grid(True)
+    plt.legend()
+    plt.savefig(f'knn_mean_training_validation_dataset_{dataset_name}.png')
+    plt.show()
 
 
 def task1_2():
@@ -44,7 +61,12 @@ def task1_4():
         # TODO: Fit your KNearestNeighborsClassifier with k in {1, 30, 100} and plot the decision boundaries.
         #       You can use the `cross_val_score` method to manually perform cross-validation.
         #       Report the mean cross-validated scores.
-        knn = None
+        knn = KNearestNeighborsClassifier(k=k)
+        knn.fit(X_train, y_train)
+
+        cv_score = cross_val_score(knn, X_train, y_train)
+        mean_scores = np.mean(cv_score)
+        print(f"Knn mean cross-validation score is: k={k} {mean_scores}")
 
         # This plots the decision boundaries without the test set
         # (we simply don't pass the test sets to `plot_dataset`).
