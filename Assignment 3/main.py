@@ -198,8 +198,18 @@ def task3_1():
         plt.xlabel('Max depth')
         plt.grid(True)
         plt.savefig(f'mean_values_with_estimator_1_and_100_dataset_{idx}')
-    # TODO: Instantiate a RandomForestClassifier with the best parameters for each dataset and
-    #       report the test scores (using X_test, y_test) for each dataset.
+        # TODO: Instantiate a RandomForestClassifier with the best parameters for each dataset and
+        #       report the test scores (using X_test, y_test) for each dataset.
+
+        classifier = RandomForestClassifier(n_estimators=100, max_depth=grid_search.best_params_['max_depth'])
+        classifier.fit(X_train, y_train)
+
+        # Predicting the Test set results
+        y_pred = classifier.predict(X_test)
+
+        # Test score
+        accuracy = np.sum(y_pred == y_test) / len(y_test)
+        print(f"[TEST_EVAL] Dataset {idx}, accuracy: {accuracy}, best_params: n_estimators=100, {grid_search.best_params_}")
 
 
 def task3_bonus():
@@ -235,8 +245,8 @@ if __name__ == '__main__':
 
     # Task 2.1 consists of a pen & paper exercise and the implementation of the LinearSVM class
     # task2_2()
-    task2_3()
+    # task2_3()
 
-    # task3_1()
+    task3_1()
     # Task 3.2 is a theory question
     # task3_bonus()
