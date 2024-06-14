@@ -14,7 +14,12 @@ def grid_search_knn_and_plot_decision_boundary(X_train, y_train, X_test, y_test,
     knn = KNearestNeighborsClassifier()
     # TODO: Use the `GridSearchCV` meta-classifier and search over different values of `k`
     #       Include the `return_train_score=True` option to get the training accuracies
-    grid_search = None
+    k = list(range(1, 101))
+    parameters = {
+        'k': k
+    }
+    grid_search = GridSearchCV(knn, parameters, cv=5, return_train_score=True)
+    grid_search.fit(X_train, y_train)
 
     # this plots the decision boundary
     plt.figure()
@@ -22,11 +27,23 @@ def grid_search_knn_and_plot_decision_boundary(X_train, y_train, X_test, y_test,
     plot_dataset(X_train, y_train, X_test, y_test)
     plt.title(f"Decision boundary for dataset {dataset_name}\nwith k={grid_search.best_params_['k']}")
     # TODO you should use the plt.savefig(...) function to store your plots before calling plt.show()
+    plt.savefig(f'knn_with_decision_boundary_dataset_{dataset_name}.png')
     plt.show()
 
     # TODO: Create a plot that shows the mean training and validation scores (y axis)
     #       for each k \in {1,...,100} (x axis).
     #       Hint: Check the `cv_results_` attribute of the `GridSearchCV` object
+
+    plt.figure()
+    plt.xlabel('k value')
+    plt.ylabel('Mean score')
+    plt.title(f"Mean training and validation scores - dataset {dataset_name}")
+    plt.plot(k, grid_search.cv_results_['mean_train_score'], label='Mean train score', color='red')
+    plt.plot(k, grid_search.cv_results_['mean_test_score'], label='Mean validation score', color='blue')
+    plt.grid(True)
+    plt.legend()
+    plt.savefig(f'knn_mean_training_validation_dataset_{dataset_name}.png')
+    plt.show()
 
 
 def task1_2():
@@ -44,7 +61,12 @@ def task1_4():
         # TODO: Fit your KNearestNeighborsClassifier with k in {1, 30, 100} and plot the decision boundaries.
         #       You can use the `cross_val_score` method to manually perform cross-validation.
         #       Report the mean cross-validated scores.
-        knn = None
+        knn = KNearestNeighborsClassifier(k=k)
+        knn.fit(X_train, y_train)
+
+        cv_score = cross_val_score(knn, X_train, y_train)
+        mean_scores = np.mean(cv_score)
+        print(f"Knn mean cross-validation score is: k={k} {mean_scores}")
 
         # This plots the decision boundaries without the test set
         # (we simply don't pass the test sets to `plot_dataset`).
@@ -128,13 +150,27 @@ def task3_1():
             # TODO: Instantiate a RandomForestClassifier with n_estimators and random_state=0
             #       and use GridSearchCV over max_depth_list to find the best max_depth.
             #       Use `return_train_score=True` to get the training accuracies during CV.
-            grid_search = None
+            random_forest_clss = RandomForestClassifier(n_estimators=n_estimators, random_state=0)
+
+            parameters = {
+                'max_depth': max_depth_list
+            }
+
+            grid_search = GridSearchCV(estimator=random_forest_clss, param_grid=parameters, cv=5, return_train_score=True)
+            grid_search.fit(X_train, y_train)
+
+            print(f'The best parameters are: {grid_search.best_params_}')
 
             # TODO: Store `mean_test_score` and `mean_train_score` in cv_val_accuracy and cv_train_accuracy.
             #       The dictionary key should be the number of estimators.
             #       Hint: Check the `cv_results_` attribute of the `GridSearchCV` object
-            cv_val_accuracy[n_estimators] = None
-            cv_train_accuracy[n_estimators] = None
+            cv_val_accuracy[n_estimators] = grid_search.cv_results_['mean_test_score']
+            cv_train_accuracy[n_estimators] = grid_search.cv_results_['mean_train_score']
+
+            cv_train = grid_search.cv_results_['mean_train_score'].mean()
+            cv_test = grid_search.cv_results_['mean_test_score'].mean()
+            print(f'The mean cross-validation accuracy for validation with n_estimator {n_estimators} is: {cv_test}')
+            print(f'The mean cross-validation accuracy for training with n_estimator {n_estimators} is: {cv_train}')
 
             # This plots the decision boundary with just the training dataset
             plt.figure()
@@ -147,9 +183,24 @@ def task3_1():
         # TODO: Create a plot that shows the mean training and validation scores (y axis)
         #       for each max_depth in max_depth_list (x axis).
         #       Use different colors for each n_estimators and linestyle="--" for validation scores.
+        color_estimator = {
+            1: 'red',
+            100: 'blue'
+        }
+        plt.plot(max_depth_list, cv_train_accuracy[1], color=color_estimator[1], label='Train with estimator 1')
+        plt.plot(max_depth_list, cv_train_accuracy[100], color=color_estimator[100], label='Train with estimator 100')
 
+        plt.plot(max_depth_list, cv_val_accuracy[1], color=color_estimator[1], linestyle="--", label='Validation with estimator 1')
+        plt.plot(max_depth_list, cv_val_accuracy[100], color=color_estimator[100],linestyle="--", label='Validation with estimator 100')
+
+        plt.legend()
+        plt.ylabel('Mean values')
+        plt.xlabel('Max depth')
+        plt.grid(True)
+        plt.savefig(f'mean_values_with_estimator_1_and_100_dataset_{idx}')
     # TODO: Instantiate a RandomForestClassifier with the best parameters for each dataset and
     #       report the test scores (using X_test, y_test) for each dataset.
+
 
 def task3_bonus():
     X_train, X_test, y_train, y_test = get_toy_dataset(4)
