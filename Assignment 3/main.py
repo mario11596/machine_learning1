@@ -63,12 +63,17 @@ def task2_2():
 
     X_train, X_test, y_train, y_test = get_toy_dataset(1, remove_outlier=True)
     svm = LinearSVM()
-    # TODO: Use grid search to find suitable parameters.
-    grid_search = None
+    # : Use grid search to find suitable parameters.
+    param_grid = {'C': [0.1, 1, 10, 50, 100], 'eta': [0.0001, 0.001, 0.01, 0.1, 1.0]}
+    grid_search = GridSearchCV(svm, param_grid, cv=5, scoring='accuracy')
+    grid_search.fit(X_train, y_train)
 
-    # TODO: Use the parameters you have found to instantiate a LinearSVM.
+    # : Use the parameters you have found to instantiate a LinearSVM.
     #       The `fit` method returns a list of scores that you should plot in order to monitor the convergence.
-    svm = None
+    best_params = grid_search.best_params_
+    print("Best parameters found: ", best_params)
+    svm = LinearSVM(C=best_params['C'], eta=best_params['eta'])
+    loss_list = svm.fit(X_train, y_train)
 
     # This plots the decision boundary
     plt.figure()
@@ -82,11 +87,27 @@ def task2_3():
     for idx in [1, 2, 3]:
         X_train, X_test, y_train, y_test = get_toy_dataset(idx)
         svc = SVC(tol=1e-4)
-        # TODO: Perform grid search, decide on suitable parameter ranges
+        # : Perform grid search, decide on suitable parameter ranges
         #       and state sensible parameter ranges in your report
-        grid_search = None
+        param_grid = [
+            {'C': [0.1, 1, 10, 50, 100], 'kernel': ['linear']},
+            {'C': [0.1, 1, 10, 50, 100, 500, 1000], 'kernel': ['rbf'], 'gamma': [0.01, 0.1, 1, 10, 15, 25]}
+        ]
 
-        # TODO: Using the best parameter settings, report the score on the test dataset (X_test, y_test)
+        # Create a grid search object with cross-validation
+        grid_search = GridSearchCV(svc, param_grid, cv=5, scoring='accuracy')
+        grid_search.fit(X_train, y_train)
+
+        # : Using the best parameter settings, report the score on the test dataset (X_test, y_test)
+
+        best_params = grid_search.best_params_
+        best_score = grid_search.best_score_
+        test_score = grid_search.score(X_test, y_test)
+
+        print(f"Dataset {idx}>> Best params: {best_params}")
+        print(f"Dataset {idx}>> Mean cv acc: {best_score:.4f}")
+        print(f"Dataset {idx}>> Test acc: {test_score:.4f}")
+        print("=============================================================\n")
 
         # This plots the decision boundary
         plt.figure()
@@ -157,14 +178,14 @@ def task3_bonus():
 
 if __name__ == '__main__':
     # Task 1.1 consists of implementing the KNearestNeighborsClassifier class
-    task1_2()
+    # task1_2()
     # Task 1.3 does not need code to be answered
-    task1_4()
+    # task1_4()
 
     # Task 2.1 consists of a pen & paper exercise and the implementation of the LinearSVM class
-    task2_2()
+    # task2_2()
     task2_3()
 
-    task3_1()
+    # task3_1()
     # Task 3.2 is a theory question
-    task3_bonus()
+    # task3_bonus()
