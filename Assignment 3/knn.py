@@ -27,20 +27,22 @@ class KNearestNeighborsClassifier(BaseEstimator):
         prediction_class = []
 
         for x_test in X:
-            distance_tmp = np.sqrt(np.sum((x_test - self.X) **2, axis=1))
-            knn_index = np.argsort(distance_tmp)[:self.k]
-            knn_y_labels = self.y[knn_index]
+            distance_tmp = np.sqrt(np.sum((x_test - self.X) ** 2, axis=1))
+            knn_index_sort = np.argsort(distance_tmp)
+            first_k = knn_index_sort[:self.k]
+            knn_class_labels = self.y[first_k]
 
-            num_zero = np.sum(knn_y_labels == 0)
-            num_one = np.sum(knn_y_labels == 1)
+            count_zero = np.sum(knn_class_labels == 0)
+            count_one = np.sum(knn_class_labels == 1)
 
-            if num_zero > num_one:
+            if count_zero > count_one:
                 decision = 0
             else:
                 decision = 1
             prediction_class.append(decision)
 
-        return np.array(prediction_class)
+        array_prediction_class = np.array(prediction_class)
+        return array_prediction_class
 
     def score(self, X, y):
         y_pred = self.predict(X)
