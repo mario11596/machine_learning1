@@ -187,7 +187,6 @@ def task3_1():
             plot_dataset(X_train, y_train)
             plt.title(f"Decision boundary for dataset {idx}\n"
                       f"n_estimators={n_estimators}, max_depth={grid_search.best_params_['max_depth']}")
-            #plt.savefig(f'dt_dataset{idx}_n_estimators={n_estimators}_max_depth={grid_search.best_params_["max_depth"]}.png')
             plt.show()
 
         # TODO: Create a plot that shows the mean training and validation scores (y axis)
@@ -198,13 +197,14 @@ def task3_1():
         plt.plot(max_depth_list, cv_train_accuracy[100], color='blue', label='Train with estimator 100')
 
         plt.plot(max_depth_list, cv_val_accuracy[1], color='red', linestyle="--", label='Validation with estimator 1')
-        plt.plot(max_depth_list, cv_val_accuracy[100], color='blue',linestyle="--", label='Validation with estimator 100')
+        plt.plot(max_depth_list, cv_val_accuracy[100], color='blue', linestyle="--", label='Validation with estimator 100')
 
         plt.legend()
-        plt.ylabel('Mean values')
+        plt.ylabel('Mean values of CV')
         plt.xlabel('Max depth')
         plt.grid(True)
-        plt.savefig(f'mean_values_with_estimator_1_and_100_dataset_{idx}')
+        plt.title(f"The relationship max depth and means of CV for dataset {idx}")
+        plt.savefig(f'Mean_values_with_estimator_1_and_100_dataset_{idx}')
         # TODO: Instantiate a RandomForestClassifier with the best parameters for each dataset and
         #       report the test scores (using X_test, y_test) for each dataset.
 

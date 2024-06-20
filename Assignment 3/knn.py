@@ -36,10 +36,10 @@ class KNearestNeighborsClassifier(BaseEstimator):
             count_one = np.sum(knn_class_labels == 1)
 
             if count_zero > count_one:
-                decision = 0
+                decision_label = 0
             else:
-                decision = 1
-            prediction_class.append(decision)
+                decision_label = 1
+            prediction_class.append(decision_label)
 
         array_prediction_class = np.array(prediction_class)
         return array_prediction_class
