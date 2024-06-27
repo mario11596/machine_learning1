@@ -5,8 +5,8 @@ from utils import load_data, plot_original_data, plot_mickey_mouse, plot_objecti
 
 
 def task_kmeans(X):
-    K = None # TODO: Choose the number of clusters
-    max_iter = None # TODO: Choose the maximum number of iterations
+    K = 5 # TODO: Choose the number of clusters
+    max_iter = 100 # TODO: Choose the maximum number of iterations
     ind_samples_clusters, centroids, J = kmeans(X, K, max_iter)
 
     plot_objective_function(J)
@@ -34,8 +34,8 @@ def main():
     task_kmeans(X_mouse)
 
     # ----- Task EM -----
-    print('--- Task EM ---')
-    task_em(X_mouse)
+    #print('--- Task EM ---')
+    #task_em(X_mouse)
 
 
 if __name__ == '__main__':
