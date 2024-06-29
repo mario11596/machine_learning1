@@ -37,7 +37,7 @@ def task_1():
     best_model_task_1_1 = best_reg_nn # TODO: Choose the best model from the previous Tasks
     plot_training_loss_curve(best_model_task_1_1)
 
-    # # # Task 1.2
+    # Task 1.2
     print("----- Task 1.2 -----")
     best_gs_nn = perform_grid_search(X_train_pca, y_train)
 
@@ -85,9 +85,9 @@ def task_3_bonus():
 
 
 def main():
-    # task_1()
+    task_1()
     task_2()
-    #task_3_bonus()
+    task_3_bonus()
 
 
 if __name__ == '__main__':

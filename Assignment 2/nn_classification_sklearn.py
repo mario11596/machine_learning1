@@ -23,7 +23,7 @@ def reduce_dimension(X_train: np.ndarray, n_components: int) -> Tuple[np.ndarray
     #       Print the explained variance ratio of the PCA object.
     #       Return both the transformed data and the PCA object.
 
-    pca_model = PCA(n_components = n_components)
+    pca_model = PCA(n_components = n_components, random_state=42)
     x_transform = pca_model.fit_transform(X_train)
 
     pca_ratio = np.sum(pca_model.explained_variance_ratio_) * 100
@@ -78,12 +78,11 @@ def train_nn(X_train: np.ndarray, y_train: np.ndarray) -> MLPClassifier:
 
         all_models.append(mlp_model)
 
-        print(f'Train accuracy: {round(accuracy_train, 5)}')
-        print(f'Validation accuracy: {round(accuracy_validation, 5)}')
+        print(f'Training Accuracy: {round(accuracy_train, 5)}')
+        print(f'Validation Accuracy: {round(accuracy_validation, 5)}')
         print(f'Training loss: {round(mlp_model.loss_, 5)}')
 
-
-    mlp_model_best = all_models[4]
+    mlp_model_best = all_models[3]
 
     return mlp_model_best
 
@@ -141,10 +140,9 @@ def train_nn_with_regularization(X_train: np.ndarray, y_train: np.ndarray) -> ML
 
             all_models.append(mlp_model)
 
-            print(f'Train accuracy: {round(accuracy_train, 5)}')
-            print(f'Validation accuracy: {round(accuracy_validation, 5)}')
+            print(f'Training Accuracy: {round(accuracy_train, 5)}')
+            print(f'Validation Accuracy: {round(accuracy_validation, 5)}')
             print(f'Training loss: {round(mlp_model.loss_, 5)}')
-
 
     return all_models[9]
 
@@ -163,7 +161,6 @@ def plot_training_loss_curve(nn: MLPClassifier) -> None:
     plt.title('Training loss curve for the MLPClassifier')
     plt.grid(True)
     plt.savefig('training_loss_mlpcclassifier.png')
-    plt.show()
 
 
 def show_confusion_matrix_and_classification_report(nn: MLPClassifier, X_test: np.ndarray, y_test: np.ndarray) -> None:
@@ -181,16 +178,15 @@ def show_confusion_matrix_and_classification_report(nn: MLPClassifier, X_test: n
     model_prediction = nn.predict(X_test)
 
     test_accuracy = nn.score(X_test, y_test)
-    print(f'Test accuracy: {round(test_accuracy, 5)}')
+    print(f'Test Accuracy: {round(test_accuracy, 5)}')
 
     cf_matrix = confusion_matrix(y_test, model_prediction)
     cd_display = ConfusionMatrixDisplay(confusion_matrix=cf_matrix, display_labels=nn.classes_)
     cd_display.plot()
     plt.savefig('confusion_matrix.png')
-    plt.show()
 
-    cd_report = classification_report(y_test, model_prediction)
-    print(cd_report)
+    classification_report_print = classification_report(y_test, model_prediction)
+    print(classification_report_print)
 
 def perform_grid_search(X_train: np.ndarray, y_train: np.ndarray) -> MLPClassifier:
     """
@@ -216,5 +212,6 @@ def perform_grid_search(X_train: np.ndarray, y_train: np.ndarray) -> MLPClassifi
     grid_search = GridSearchCV(mlp_model, parameters, cv = 5, verbose = 4)
     grid_search.fit(X_train, y_train)
 
-    print(f'Results after Grid serach. The best score: {grid_search.best_score_}, the best parameter set: {grid_search.best_params_}')
+    print(f'Results after Grid search. The best score: {grid_search.best_score_}, the best parameter set: {grid_search.best_params_}')
+
     return grid_search.best_estimator_
