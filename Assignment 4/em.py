@@ -18,6 +18,14 @@ def calculate_responsibilities(X: np.ndarray, means: np.ndarray, sigmas: np.ndar
     #       Note that `multivariate_normal` is already imported.
     responsibilities = np.zeros((N, K))  # Stores all \gamma_{ik} from the HW sheet
 
+    for k in range(K):
+        prob_density = multivariate_normal.pdf(X, mean=means[k], cov=sigmas[k])
+        responsibilities[:, k] = weights[k] * prob_density
+
+    # Normalize the responsibilities to have valid pdf
+    responsibilities_sum = np.sum(responsibilities, axis=1, keepdims=True)
+    responsibilities /= responsibilities_sum
+
     return responsibilities
 
 
@@ -39,6 +47,19 @@ def update_parameters(X: np.ndarray, means: np.ndarray, sigmas: np.ndarray,
     means_new = np.zeros_like(means)
     sigmas_new = np.zeros_like(sigmas)
     weights_new = np.zeros_like(weights)
+
+    for k in range(K):
+        gamma_k = responsibilities[:, k]
+        sum_gamma_k = np.sum(gamma_k)
+        sum_gamma_k_inv = 1.0 / sum_gamma_k
+
+        # Update means
+        means_new[k] = sum_gamma_k_inv * np.sum(gamma_k[:, np.newaxis] * X, axis=0)
+        # Update covariance matrices
+        x_minus_mean = X - means_new[k]
+        sigmas_new[k] = sum_gamma_k_inv * (x_minus_mean.T @ (x_minus_mean * gamma_k[:, np.newaxis]))
+        # Update weights
+        weights_new[k] = 1/N * sum_gamma_k
 
     return means_new, sigmas_new, weights_new
 
@@ -70,10 +91,10 @@ def em(X: np.ndarray, K: int, max_iter: int, eps=1e-2, init_variance=1.5) -> Tup
     log_likelihood = []
     for it in range(max_iter):
         # E-Step
-        # TODO: Call the appropriate function
+        responsibilities = calculate_responsibilities(X, means, sigmas, weights)
 
         # M-Step
-        # TODO: Call the appropriate function
+        means, sigmas, weights = update_parameters(X, means, sigmas, weights, responsibilities)
 
         # Evaluate log-likelihood under the current model (with parameters means, sigmas, weights)
         soft_clusters = np.zeros((N, K))

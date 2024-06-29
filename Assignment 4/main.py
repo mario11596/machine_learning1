@@ -5,7 +5,7 @@ from utils import load_data, plot_original_data, plot_mickey_mouse, plot_objecti
 
 
 def task_kmeans(X):
-    K = 5 # TODO: Choose the number of clusters
+    K = 3 # TODO: Choose the number of clusters
     max_iter = 100 # TODO: Choose the maximum number of iterations
     ind_samples_clusters, centroids, J = kmeans(X, K, max_iter)
 
@@ -14,8 +14,8 @@ def task_kmeans(X):
 
 
 def task_em(X):
-    K = None # TODO: Choose the number of clusters
-    max_iter = None # TODO: Choose the maximum number of iterations
+    K = 3  # TODO: Choose the number of clusters
+    max_iter = 150  # TODO: Choose the maximum number of iterations
     means, soft_clusters, log_likelihood = em(X, K, max_iter)
 
     plot_objective_function(log_likelihood, ylabel='Log-likelihood')
@@ -34,8 +34,8 @@ def main():
     task_kmeans(X_mouse)
 
     # ----- Task EM -----
-    #print('--- Task EM ---')
-    #task_em(X_mouse)
+    print('--- Task EM ---')
+    task_em(X_mouse)
 
 
 if __name__ == '__main__':
