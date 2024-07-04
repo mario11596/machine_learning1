@@ -50,11 +50,11 @@ def compute_Z(X: np.ndarray, K: int, centroids: np.ndarray) -> np.ndarray:
     #       The indicator variables represent the cluster assignments of each data point.
     Z = np.zeros((N, K))
 
-    for i in range(N):
-        sample = X[i]
+    for i_data in range(N):
+        sample_data = X[i_data]
 
-        assign_point_to_cluster = closest_centroid(sample, centroids)
-        Z[i, assign_point_to_cluster] = 1
+        assign_point_to_cluster = closest_centroid(sample_data, centroids)
+        Z[i_data, assign_point_to_cluster] = 1
 
     assert len(np.unique(Z)) == 2 and np.min(Z) == 0 and np.max(Z) == 1, 'Z should be a matrix of zeros and ones'
     assert np.all(np.sum(Z, axis=1) == np.ones(Z.shape[0])), 'Each data point should be assigned to exactly 1 cluster'
